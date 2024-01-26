@@ -54,4 +54,8 @@ tasmania |>
 tasmania |>
   gg_subseries(log(Takings))
 ```
+```{r}
+tasmania |>
+  gg_tsdisplay(log(Takings), plot_type = "auto")
+```
 
