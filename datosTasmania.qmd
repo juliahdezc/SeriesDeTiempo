@@ -75,8 +75,9 @@ stocks_data
 ```
 ```{r}
 stocks_data |>
-  ggplot(aes(x = date, y = close, color = symbol)) + 
+  ggplot(aes(x = date, open = open, high = high, low = low, close = close)) + 
   theme_dark() + 
-  geom_line()
+  geom_candlestick() + 
+  facet_wrap(~symbol, ncol = 2)
 ```
 
