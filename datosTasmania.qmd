@@ -58,4 +58,19 @@ tasmania |>
 tasmania |>
   gg_tsdisplay(log(Takings), plot_type = "auto")
 ```
+```{r}
+stocks <- c("MCK", "META", "NVDA")
+
+stocks_data <- tq_get(
+  x = stocks,
+  get = "stock.prices",
+  from = "2010-01-01",
+  to = "2024-01-25"
+)
+
+stocks_data <- stocks_data |>
+  as_tsibble(index = date, key = symbol)
+
+stocks_data
+```
 
