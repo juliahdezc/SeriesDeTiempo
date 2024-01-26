@@ -73,4 +73,10 @@ stocks_data <- stocks_data |>
 
 stocks_data
 ```
+```{r}
+stocks_data |>
+  ggplot(aes(x = date, y = close, color = symbol)) + 
+  theme_dark() + 
+  geom_line()
+```
 
