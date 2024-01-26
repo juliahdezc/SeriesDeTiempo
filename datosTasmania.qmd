@@ -1,0 +1,57 @@
+```         
+```
+
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+
+
+```{r}
+library(tidyverse)
+library(fpp3)
+library(plotly)
+library(patchwork)
+library(tidyquant)
+```
+```{r}
+aus_accommodation
+```
+```{r}
+aus_accommodation |>
+  distinct(State)
+
+tasmania <- aus_accommodation |>
+  filter(State == "Tasmania")
+
+tasmania |>
+  select(-c(State, CPI)) |>
+  mutate(
+    'Año unión N°1 '= 1
+  ) |>
+    janitor::clean_names()
+        
+tasmania |>
+  glimpse()
+names(tasmania)
+
+```
+```{r}
+tasmania |>
+  autoplot(Takings, color = "#DB6B69", size = 2)
+```
+we can see that the Takings have an upward tendency, yearly seasonality, and an increasing variancce, we can try using a log transformation to stabilize the variance
+```{r}
+tasmania |>
+  autoplot(log(Takings), color = "#DB6B69", size = 2)
+```
+```{r}
+tasmania |>
+  gg_season(log(Takings))
+
+tasmania |>
+  gg_subseries(log(Takings))
+```
+
