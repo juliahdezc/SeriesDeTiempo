@@ -81,3 +81,18 @@ stocks_data |>
   facet_wrap(~symbol, ncol = 2)
 ```
 
+```{r}
+p <- tasmania |>
+  autoplot(log(Takings), color = "blue", size = 1)
+```
+
+```{r}
+geom_point()
+```
+
+
+```{r}
+ggplotly(p, dynamicTicks = TRUE) |>
+  rangeslider()
+```
+
