@@ -1,0 +1,42 @@
+---
+title: "estacionalidad"
+format: docx
+editor: visual
+---
+```{r}
+library(tidyverse)
+library(fpp3)
+
+empleo_tsbl <- us_employment |>
+  filter(year(Month) >= 1990, Title == "Retail Trade") |>
+  select(-Series_ID)
+
+us_retail_employment |>
+  write_csv("datos/empleo_eeuu.csv")
+```
+
+```{r}
+empleo_decomp <- empleo_tsbl |>
+  model(
+    clasica = classical_decomposition(Employed, 
+                                      type = "additive" )
+  )
+empleo_decomp
+```
+```{r}
+empleo_tsbl |>
+  autoplot(Employed)
+```
+
+```{r}
+empleo_components <- empleo_decomp |>
+  components()
+
+empleo_components 
+```
+
+```{r}
+empleo_components |>
+  autoplot()
+```
+
