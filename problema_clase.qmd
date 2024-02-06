@@ -60,7 +60,7 @@ pibmex_tsbl
 
 ```{r}
 pibmex_tsbl |>
-  autoplot(log(GDP))
+  autoplot(GDP)
 ```
 
 ```{r}
@@ -68,5 +68,24 @@ vic_elec |>
   autoplot(Demand)
 ```
 
- ¿Qué efecto tuvo la transformación?
- 
+3
+```{r}
+canadian_gas
+```
+
+
+```{r}
+p5a <- canadian_gas %>% autoplot(Volume)+ 
+  ggtitle("Producción de gas (datos reales)")
+
+p5 <- canadian_gas %>% autoplot(box_cox(Volume,lambda = -0.5)) + ggtitle("Box-Cox, lambda = -0.5")
+
+p6 <- canadian_gas %>% autoplot(box_cox(Volume,lambda = 0)) + ggtitle("Box-Cox, lambda = 0 (log)")
+
+p7 <- canadian_gas %>% autoplot(box_cox(Volume,lambda = 0.1)) + ggtitle("Box-Cox, lambda = 0.1")
+
+p8 <- canadian_gas %>% autoplot(box_cox(Volume,lambda = 1)) + ggtitle("Box-Cox, lambda = 1")
+
+p5a
+```
+
