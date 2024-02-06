@@ -1,0 +1,35 @@
+---
+title: "problemas en clase"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(fpp3)
+```
+
+```{r}
+global_economy
+```
+
+```{r}
+pib_tsbl <- global_economy |>
+  autoplot(GDP/Population) + theme(legend.position = "none")
+
+pib_tsbl
+```
+
+¿Cómo ha sido la evolución de la economía de los países en el tiempo? 
+como la gráfica lo muestra, la economía ha incrementado exponencialmente desde 1960 hasta la actualidad, mostrando un crecimiento mayor a partir de 1980 en adelante.
+
+¿Cuál país tiene el mayor PIB per cápita?
+Monaco
+
+```{r}
+global_economy |>
+  select(-c(Code, Growth:Exports)) |>
+  filter(Year == "2016") |>
+  mutate(gdp_per_capita = GDP/Population) |>
+  arrange(desc(gdp_per_capita))
+```
