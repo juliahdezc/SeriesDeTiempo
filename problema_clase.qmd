@@ -9,6 +9,8 @@ library(tidyverse)
 library(fpp3)
 ```
 
+1
+
 ```{r}
 global_economy
 ```
@@ -28,8 +30,43 @@ Monaco
 
 ```{r}
 global_economy |>
-  select(-c(Code, Growth:Exports)) |>
-  filter(Year == "2016") |>
   mutate(gdp_per_capita = GDP/Population) |>
-  arrange(desc(gdp_per_capita))
+  select(-c(Code, Growth:Exports)) |>
+  filter(Year %in% 2010:2017) |>
+  as_tibble() |>
+  group_by(Country) |>
+  summarise(mean_gdppc = mean(gdp_per_capita, na.rm = TRUE)) |>
+  arrange(desc(mean_gdppc))
 ```
+2
+
+```{r}
+pibusa_tsbl <- global_economy |>
+  filter(Country == "United States")
+
+pibusa_tsbl
+```
+```{r}
+pibusa_tsbl |>
+  autoplot(log(GDP))
+```
+
+```{r}
+pibmex_tsbl <- global_economy |>
+  filter(Country == "Mexico")
+
+pibmex_tsbl
+```
+
+```{r}
+pibmex_tsbl |>
+  autoplot(log(GDP))
+```
+
+```{r}
+vic_elec |>
+  autoplot(Demand)
+```
+
+ ¿Qué efecto tuvo la transformación?
+ 
