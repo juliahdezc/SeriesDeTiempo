@@ -3,10 +3,17 @@ title: "problemas en clase"
 format: html
 editor: visual
 ---
+JULIA HERNÁNDEZ CÁRDENAS
 
 ```{r}
 library(tidyverse)
 library(fpp3)
+```
+
+```{r}
+library("easypackages")
+packages("tidyverse", "tidyquant", "lubridate", "patchwork", "fpp2","fpp3","scales", "timetk")
+
 ```
 
 1
@@ -87,5 +94,42 @@ p7 <- canadian_gas %>% autoplot(box_cox(Volume,lambda = 0.1)) + ggtitle("Box-Cox
 p8 <- canadian_gas %>% autoplot(box_cox(Volume,lambda = 1)) + ggtitle("Box-Cox, lambda = 1")
 
 p5a
+```
+¿Es útil realizar una transformación de Box-Cox a los datos canadian_gas? ¿Por qué sí o por qué no?
+Si es útil, ya que ayuda a acomodar los datos en la gráfica de una manera en la que se vea más claro la tendencia alcista y la estacionalidad
+
+4
+
+```{r}
+fma::plastics
+```
+Grafique la serie de tiempo para el producto A. ¿Identifica algún componente de tendencia-ciclo y/o estacional?
+tiene un ciclo estacional de aproximadamente 2 meses
+
+```{r}
+fma::plastics |>
+  autoplot()
+```
+
+Utilice una descomposición clásica multiplicativa para calcular el componente de tendencia y estacional.
+
+```{r}
+fma::plastics %>%
+  decompose(type = "multiplicative") %>%
+  autoplot() + xlab("Month") +
+  ggtitle("Classical multiplicative decomposition of the sales of a product A")
+```
+
+¿Los resultados coinciden con su respuesta al inciso i)?
+No
+
+Calcule y grafique los datos desestacionalizados.
+
+```{r}
+fma::plastics %>%
+  autoplot(color = 'gray') +
+  autolayer(trend, color = 'blue') +
+  xlab("Month") + ylab("Earnings") +
+  ggtitle("Total earnings of product A")
 ```
 
