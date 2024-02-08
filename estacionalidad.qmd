@@ -6,7 +6,16 @@ editor: visual
 ```{r}
 library(tidyverse)
 library(fpp3)
+```
 
+```{r}
+us_retail_employment <- us_employment %>%
+  filter(year(Month) >= 1990, Title == "Retail Trade") %>%
+  select(-Series_ID)
+
+us_retail_employment
+```
+```{r}
 empleo_tsbl <- us_employment |>
   filter(year(Month) >= 1990, Title == "Retail Trade") |>
   select(-Series_ID)
@@ -14,6 +23,7 @@ empleo_tsbl <- us_employment |>
 us_retail_employment |>
   write_csv("datos/empleo_eeuu.csv")
 ```
+
 
 ```{r}
 empleo_decomp <- empleo_tsbl |>
