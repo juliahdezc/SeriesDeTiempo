@@ -46,7 +46,7 @@ global_economy |>
   arrange(desc(mean_gdppc))
 ```
 2
-
+i)
 ```{r}
 pibusa_tsbl <- global_economy |>
   filter(Country == "United States")
@@ -58,6 +58,7 @@ pibusa_tsbl |>
   autoplot(log(GDP))
 ```
 
+ii)
 ```{r}
 pibmex_tsbl <- global_economy |>
   filter(Country == "Mexico")
@@ -70,6 +71,7 @@ pibmex_tsbl |>
   autoplot(GDP)
 ```
 
+iii)
 ```{r}
 vic_elec |>
   autoplot(Demand)
@@ -103,6 +105,7 @@ Si es útil, ya que ayuda a acomodar los datos en la gráfica de una manera en l
 ```{r}
 fma::plastics
 ```
+i)
 Grafique la serie de tiempo para el producto A. ¿Identifica algún componente de tendencia-ciclo y/o estacional?
 tiene un ciclo estacional de aproximadamente 2 meses
 
@@ -111,25 +114,35 @@ fma::plastics |>
   autoplot()
 ```
 
+ii)
 Utilice una descomposición clásica multiplicativa para calcular el componente de tendencia y estacional.
 
 ```{r}
-fma::plastics %>%
-  decompose(type = "multiplicative") %>%
-  autoplot() + xlab("Month") +
-  ggtitle("Classical multiplicative decomposition of the sales of a product A")
+plastic_tsbl <- fma::plastics
 ```
-
-¿Los resultados coinciden con su respuesta al inciso i)?
-No
-
-Calcule y grafique los datos desestacionalizados.
 
 ```{r}
-fma::plastics %>%
-  autoplot(color = 'gray') +
-  autolayer(trend, color = 'blue') +
-  xlab("Month") + ylab("Earnings") +
-  ggtitle("Total earnings of product A")
+decomp <- decompose(plastic_tsbl, type = "multiplicative")
 ```
+
+```{r}
+decomp |>
+  autoplot() + xlab("Month") +
+  ggtitle("Clasic mult. decomp. of the sales of a product A")
+```
+iii)
+¿Los resultados coinciden con su respuesta al inciso i)?
+si, ambas tienen tendencia alcista y estacionalidad
+
+iv)
+Calcule y grafique los datos desestacionalizados.
+
+
+```{r}
+datos_des <- decomp |>
+  select(index, season_adjust)
+autoplot(datos_des)
+```
+
+
 
