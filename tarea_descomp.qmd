@@ -2,7 +2,14 @@
 title: "tarea_decomp"
 format: html
 editor: visual
+html:
+  embed_resources: true
+  toc: true
 ---
+
+JULIA HERNANDEZ CARDENAS
+
+1
 
 ```{r}
 library(tidyverse)
@@ -68,7 +75,6 @@ vic_elec |>
 ```
 
 3
-
 ```{r}
 canadian_gas
 ```
@@ -89,7 +95,6 @@ p5a
 ¿Es útil realizar una transformación de Box-Cox a los datos canadian_gas? ¿Por qué sí o por qué no? Si es útil, ya que ayuda a acomodar los datos en la gráfica de una manera en la que se vea más claro la tendencia alcista y la estacionalidad
 
 4
-
 ```{r}
 fma::plastics |> 
   autoplot()
