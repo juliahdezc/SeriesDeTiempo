@@ -5,6 +5,7 @@ editor: visual
 html:
   embed_resources: true
   toc: true
+df-print : paged  
 ---
 
 JULIA HERNANDEZ CARDENAS
@@ -12,6 +13,7 @@ JULIA HERNANDEZ CARDENAS
 1
 
 ```{r}
+
 library(tidyverse)
 library(fpp3)
 ```
