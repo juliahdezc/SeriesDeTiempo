@@ -103,32 +103,38 @@ Si es útil, ya que ayuda a acomodar los datos en la gráfica de una manera en l
 4
 
 ```{r}
-fma::plastics
+fma::plastics |> 
+  autoplot()
 ```
 i)
 Grafique la serie de tiempo para el producto A. ¿Identifica algún componente de tendencia-ciclo y/o estacional?
 tiene un ciclo estacional de aproximadamente 2 meses
 
 ```{r}
-fma::plastics |>
-  autoplot()
+plastic_tsbl <- as_tsibble(fma::plastics)
+plastic_tsbl
 ```
 
 ii)
 Utilice una descomposición clásica multiplicativa para calcular el componente de tendencia y estacional.
 
 ```{r}
-plastic_tsbl <- fma::plastics
+plastic_decomp <- plastic_tsbl |>
+  model(
+    clasica = classical_decomposition(value, type = "multiplicative")
+  )
 ```
 
 ```{r}
-decomp <- decompose(plastic_tsbl, type = "multiplicative")
+plastic_comp <- plastic_decomp |>
+  components()
+
+plastic_comp
 ```
 
 ```{r}
-decomp |>
-  autoplot() + xlab("Month") +
-  ggtitle("Clasic mult. decomp. of the sales of a product A")
+plastic_comp |>
+  autoplot()
 ```
 iii)
 ¿Los resultados coinciden con su respuesta al inciso i)?
@@ -137,12 +143,57 @@ si, ambas tienen tendencia alcista y estacionalidad
 iv)
 Calcule y grafique los datos desestacionalizados.
 
+```{r}
+plastico_des <- plastic_comp
+plastico_des |>
+  ggplot(aes(x = index, y = season_adjust)) + 
+  geom_line()
+```
+v) 
+Cambie, manualmente, una observación para que sea un outlier (p. ej., sume 500 a una observación). Vuelva a estimar los datos desestacionalizados. ¿Cuál fue el efecto de ese outlier?
+la tendencia tiene una leve desviación en la tendencia alcista, y la estacionalidad también tiene un pico
 
 ```{r}
-datos_des <- decomp |>
-  select(index, season_adjust)
-autoplot(datos_des)
+outlier <- 15
+plastic2 <- plastic_tsbl
+plastic2$value[outlier] <- plastic_tsbl$value[outlier] + 500
+
+plastic2
+```
+```{r}
+plastic2 |>
+   model(
+    clasica = classical_decomposition(value, type = "multiplicative")
+  ) |>
+  components() |>
+  autoplot()
 ```
 
+vi)
+¿Hace alguna diferencia que el outlier se encuentre cerca del final de la serie o más alrededor del centro?
 
+```{r}
+outlier <- 50
+plastic2 <- plastic_tsbl
+plastic2$value[outlier] <- plastic_tsbl$value[outlier] + 500
+
+plastic2
+```
+
+```{r}
+plastic2 |>
+   model(
+    clasica = classical_decomposition(value, type = "multiplicative")
+  ) |>
+  components() |>
+  autoplot()
+```
+```{r}
+plastic_stl <- plastic2 |>
+  model(stl = STL(value, robust = TRUE))
+
+plastic_stl |>
+  components() |>
+  autoplot()
+```
 
