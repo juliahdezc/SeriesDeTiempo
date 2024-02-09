@@ -2,6 +2,9 @@
 title: "problemas en clase"
 format: html
 editor: visual
+html:
+  embed-resources: true
+  toc: true
 ---
 JULIA HERNÁNDEZ CÁRDENAS
 
