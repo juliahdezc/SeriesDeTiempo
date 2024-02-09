@@ -1,0 +1,57 @@
+---
+title: "caracteristicas"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(fpp3)
+```
+
+```{r}
+aus_accommodation |>
+  features(Takings,
+           list(media = mean)
+           )
+```
+
+```{r}
+aus_accommodation |>
+  pivot_longer(cols = Takings: CPI, names_to = "variable",
+               values_to = "valor") |>
+  features(valor, 
+           list(media = mean,
+                desv_std = sd,
+                minimo = min,
+                maximo = max,
+                mediana = mean)
+           ) |>
+  pivot_wider(names_from = variable, values_from = media)
+```
+
+```{r}
+aus_accommodation_long <- aus_accommodation |>
+  pivot_longer(cols = Takings: CPI, names_to = "variable",
+               values_to = "valor") 
+aus_accommodation_long |>
+  features(valor, 
+           list(media = mean,
+                desv_std = sd,
+                minimo = min,
+                maximo = max,
+                mediana = mean)
+           ) |>
+  pivot_wider(names_from = variable, values_from = media:mediana)
+```
+
+```{r}
+aus_accommodation_long|>
+  features(valor, feat_stl) 
+```
+
+```{r}
+aus_accommodation_long|>
+  features(valor, guerrero) 
+```
+
