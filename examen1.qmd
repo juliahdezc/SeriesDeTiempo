@@ -4,6 +4,8 @@ format: html
 editor: visual
 ---
 
+JULIA HERNÁNDEZ CÁRDENAS
+
 ```{r}
 library(tidyverse)
 library(fpp3)
@@ -30,7 +32,7 @@ aus |>
 ```{r}
 aus_decomp <- aus |> 
   model(
-    stl = STL(box_cox(Turnover, lambda), robust = TRUE)
+    stl = STL(box_cox(Turnover, lambda = 0.03766153), robust = TRUE)
   ) |> 
   components() |> 
   autoplot()
