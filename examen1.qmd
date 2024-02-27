@@ -1,0 +1,68 @@
+---
+title: "examen1"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(fpp3)
+```
+
+```{r}
+aus <- filter(aus_retail, Industry == "Liquor retailing", State == "Western Australia")
+aus
+```
+
+```{r}
+aus |> 
+  features(Turnover, features = guerrero)
+
+aus |> 
+  autoplot(Turnover)
+
+aus |> 
+  autoplot(box_cox(Turnover, lambda = 0.03766153))
+```
+
+
+
+```{r}
+aus_decomp <- aus |> 
+  model(
+    stl = STL(box_cox(Turnover, lambda), robust = TRUE)
+  ) |> 
+  components() |> 
+  autoplot()
+
+aus_decomp
+```
+
+```{r}
+aus_fit <- aus |> 
+  model(
+    snaive = SNAIVE(box_cox(Turnover, lambda = 0.03766153)),
+  )
+aus_fit
+```
+
+```{r}
+aus_fit |> 
+  select(snaive) |> 
+  gg_tsresiduals()
+```
+```{r}
+accuracy(aus_fit) |> 
+  arrange(MAPE)
+```
+```{r}
+aus_fc <- aus_fit |> 
+  forecast(h = "6 years")
+
+aus_fc
+
+aus_fc |> 
+  autoplot(aus |> filter_index("Jan. 2000" ~ .), level = NULL)
+```
+
+Conclusión: Como se puede observar en este pronóstico, la tendencia sigue siendo ligeramente alcista, aunque se observa que el crecimiento no será exponencial,  y la estacionalidad tiene picos cada diciembre
